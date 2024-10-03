@@ -7,14 +7,13 @@ class Hitori():
         self.counter = 0
         self.board_setup()
 
+
     def board_setup(self):
-        for row in range(self.board_size):
-            to_add = np.array([int(number) for number in input("Enter row: ").split()])
-            if row == 0:
-                board = to_add
-            else:
-                board = np.vstack((board, to_add))
-        self.board = board
+        board_input = []
+        for i in range(self.board_size):
+            board_input.append([int(number) for number in input("Enter row: ").split()])
+        self.board = np.array(board_input)
+
 
     def valid(self, row, column):
         surrounding = []
