@@ -68,26 +68,19 @@ class Hitori():
     def recur(self, reached_board, row, column, initial):
         surrounding = []
         for i in range(-1, 2, 2):
-                try:
-                    if row + i >= 0:
-                        surrounding.append([row + i, column, self.board[row + i, column]])
-                except IndexError:
-                    pass
-                try:
-                    if column + i >= 0:
-                        surrounding.append([row, column + i, self.board[row, column + i]])
-                except IndexError:
-                    pass
-        for i in surrounding:
-            if i[2] != 0 and reached_board[i[0], i[1]] != 0:
-                reached_board[i[0], i[1]] = 0
+                if 0 <= row + i < self.board_size:
+                    surrounding.append([row + i, column])
+                if 0 <= column + i < self.board_size:
+                    surrounding.append([row, column + i])
+        for r, c in surrounding:
+            if self.board[r, c] != 0 and reached_board[r, c] != 0:
+                reached_board[r, c] = 0
                 if not np.any(reached_board):
                     return True
-                enclosed_valid = self.recur(reached_board, i[0], i[1], initial + 1)
-                if enclosed_valid == True:
+                enclosed_valid = self.recur(reached_board, r, c, initial + 1)
+                if enclosed_valid:
                     return enclosed_valid
-        if initial == 0:
-            return False
+        return False
 
 
     def solve(self):
