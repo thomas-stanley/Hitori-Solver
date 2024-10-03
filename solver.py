@@ -106,38 +106,15 @@ class Hitori():
         return self.finished()
     
 
-board_size = int(input("Enter board row length: "))
-board = Hitori(board_size)
-start = time()
-board.solve()
-end = time()
-print(f"{board.counter} function calls occurred.")
-print(f"It took {round(end - start, 3)} seconds to solve.")  
+def main():
+    board_size = int(input("Enter board row length: "))
+    board = Hitori(board_size)
+    start = time()
+    board.solve()
+    end = time()
+    print(f"{board.counter} function calls occurred.")
+    print(f"It took {round(end - start, 3)} seconds to solve.")  
 
 
-"""
-def solve(self):
-    for row in range(self.board_size):
-        for column in range(self.board_size):
-            value = self.board[row, column]
-            if value != 0:
-                row_values = self.board[row, :]
-                col_values = self.board[:, column]
-                
-                # Check for duplicates in the row and column
-                if np.count_nonzero(row_values == value) > 1 or np.count_nonzero(col_values == value) > 1:
-                    self.board[row, column] = 0
-                    if not self.valid(row, column):
-                        self.board[row, column] = value
-                    else:
-                        self.counter += 1
-                        result = self.solve()
-                        if result:
-                            return True
-                        else:
-                            self.board[row, column] = value
-        # Check if the row has duplicates
-        test_row = self.board[row, self.board[row, :] != 0]
-        if len(set(test_row)) != len(test_row):
-            return False
-    return self.finished()"""
+if __name__ == "__main__":
+    main()
