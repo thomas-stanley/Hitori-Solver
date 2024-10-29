@@ -1,7 +1,7 @@
 import numpy as np
 from time import time
 
-class Hitori():
+class Hitori:
     def __init__(self, board_size):
         self.board_size = board_size
         self.counter = 0
