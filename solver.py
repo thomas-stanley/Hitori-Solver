@@ -42,25 +42,21 @@ class Hitori:
             column_values = self.board[:, i]
             column_values = column_values[column_values != 0]
             if len(set(column_values)) != len(column_values):
-                return False
+                return False  # Some error here, future me please fix, this causes an infinite loop.
         enclosed_valid = self.enclosed_area()
-        if enclosed_valid == True:
+        if enclosed_valid:
             print(self.board)
         return enclosed_valid
 
 
     def enclosed_area(self):
-        reached_board = np.ones((self.board_size, self.board_size), dtype=int)
-        if self.board[0, 0] != 0:
-            row = 0
+        print("Called enclosed_area")
+        reached_board = self.board.copy()
+        row = 0
+        if reached_board[0, 0] != 0:
             column = 0
         else:
-            row = 0
             column = 1
-        for board_row in range(self.board_size):
-            for board_column in range(self.board_size):
-                if self.board[board_row, board_column] == 0:
-                    reached_board[board_row, board_column] = 0
         state = self.recur(reached_board, row, column, 0)
         return state
 
@@ -79,7 +75,7 @@ class Hitori:
                     return True
                 enclosed_valid = self.recur(reached_board, r, c, initial + 1)
                 if enclosed_valid:
-                    return enclosed_valid
+                    return True
         return False
 
 
