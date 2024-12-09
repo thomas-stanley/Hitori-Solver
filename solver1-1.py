@@ -2,16 +2,17 @@ import numpy as np
 from time import time
 
 class Hitori:
-    def __init__(self, board_size):
-        self.board_size = board_size
+    def __init__(self):
         self.counter = 0
         self.board_setup()
 
 
     def board_setup(self):
         board_input = []
-        for i in range(self.board_size):
-            board_input.append([int(number) for number in input("Enter row: ").split()])
+        with open("input.txt", "r") as file:
+            self.board_size = int(file.readline())
+            for line in range(self.board_size):
+                board_input.append([int(number) for number in file.readline().split()])
         self.board = np.array(board_input)
 
 
@@ -33,16 +34,14 @@ class Hitori:
         return True
 
 
-    def finished(self):
+    def finished(self):  # No need for row check as this is already done in the solve function
         for i in range(self.board_size):
-            row_values = self.board[i, :]
-            row_values = row_values[row_values != 0]
-            if len(set(row_values)) != len(row_values):
-                return False
             column_values = self.board[:, i]
             column_values = column_values[column_values != 0]
             if len(set(column_values)) != len(column_values):
-                return False  # Some error here, future me please fix, this causes an infinite loop.
+                print(column_values)
+                print("-----")
+                return False  # This is where the function keeps on coming to when there is an infinite loop
         enclosed_valid = self.enclosed_area()
         if enclosed_valid:
             print(self.board)
@@ -50,7 +49,6 @@ class Hitori:
 
 
     def enclosed_area(self):
-        print("Called enclosed_area")
         reached_board = self.board.copy()
         row = 0
         if reached_board[0, 0] != 0:
@@ -62,6 +60,7 @@ class Hitori:
 
 
     def recur(self, reached_board, row, column, initial):
+        print("here")
         surrounding = []
         for i in range(-1, 2, 2):
                 if 0 <= row + i < self.board_size:
@@ -71,7 +70,7 @@ class Hitori:
         for r, c in surrounding:
             if self.board[r, c] != 0 and reached_board[r, c] != 0:
                 reached_board[r, c] = 0
-                if not np.any(reached_board):
+                if not np.any(reached_board):  # What does this do? It clearly does something useful
                     return True
                 enclosed_valid = self.recur(reached_board, r, c, initial + 1)
                 if enclosed_valid:
@@ -98,13 +97,12 @@ class Hitori:
             test_row = self.board[row, :]
             test_row = test_row[test_row != 0]
             if len(set(test_row)) != len(test_row):
-                return False               
+                return False           
         return self.finished()
     
 
 def main():
-    board_size = int(input("Enter board row length: "))
-    board = Hitori(board_size)
+    board = Hitori()
     start = time()
     board.solve()
     end = time()
